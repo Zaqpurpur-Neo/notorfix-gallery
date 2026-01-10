@@ -5,11 +5,9 @@ let { loaded = false, colorBackground = "#f1f1f1", colorBorder = "#f1f1f1" } = $
 
 let chunkSize = 2;
 let stepDelay = 8;  
-let borderWith = 2;
+let borderWith = 1;
 
 const pixelsize = 64;
-const duration = 0.8;
-const delayFactor = 0.0006;
 
 let pixels: Array<{x: number, y: number}> = [];
 let index = 0;

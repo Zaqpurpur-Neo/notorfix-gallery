@@ -8,7 +8,7 @@
 	let post: Post & { index: number } = $props();
 	
 	const placeholder = changeThumbnailResolution(post.coverImage, 20);
-	const originalImage = changeThumbnailResolution(post.coverImage, 350);
+	const originalImage = changeThumbnailResolution(post.coverImage, 550);
 	const content = post.contents.filter(item => item.order < 3)
 
 </script>
@@ -70,7 +70,6 @@
 	align-items: center;
 	gap: 1em;
 	border-top: 1px solid #4f4f4f;
-	aspect-ratio: 1/1;
 	justify-content: space-around;
 	overflow: hidden;
 }
@@ -107,6 +106,7 @@
 	height: auto;
 	padding: .75em;
 	box-sizing: border-box;
+	margin-top: auto;
 }
 
 .title {
@@ -116,14 +116,10 @@
 	z-index: 2;
 }
 
-@media (min-width: 900px) {
-	.card-container {
-		border-right: 1px solid #4f4f4f
-	}
-}
 
 .stackable {
 	position: relative;
+	margin: auto 0;
 }
 
 .image-wrapper {
@@ -178,6 +174,32 @@
 
 .image-wrapper.loaded .img.full {
   opacity: 1;
+}
+
+
+@media (min-width: 600px) {
+	.card-container {
+		border-right: 1px solid #4f4f4f
+	}
+}
+
+@media (max-width: 600px) {
+	.card-container {
+		aspect-ratio: 1/1.25;
+	}
+
+	.title {
+		font-size: 1em;
+	}
+	
+	.img-stack-item {
+		width: 60vw;
+	}
+
+	.image-wrapper {
+		width: 60vw;
+		min-height: none;
+	}
 }
 
 </style>
