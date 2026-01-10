@@ -1,11 +1,18 @@
 export async function getContent() {
-	const res = await fetch(
-		"/api/content",
-		{ cache: "force-cache" }
-	)
+	try {
+		const res = await fetch(
+			"/api/content",
+			{ cache: "force-cache" }
+		)
 
-	if(!res.ok) throw new Error("Failed")
-	return res.json()
+		if (!res.ok) {
+      		throw new Error(`HTTP error! status: ${res.status}`);
+    	}
+		
+		return res.json()
+	} catch (err) {
+		throw new Error(err.message)
+	}
 }
 
 export function changeThumbnailResolution(url = "", res = 300) {
