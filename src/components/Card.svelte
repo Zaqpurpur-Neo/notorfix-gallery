@@ -1,22 +1,59 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import type { Post } from "..";
     import { changeThumbnailResolution } from "../utils";
     import PixelMask from "./PixelMask.svelte";
 	
 	let loaded: boolean = $state(false);
 	let post: Post & { index: number } = $props();
+	let isHovered: boolean = $state(false);
+	let mq: MediaQueryList;
+	let observer: IntersectionObserver | null = null;
+	let elementObserve: HTMLDivElement;
 	
 	const placeholder = changeThumbnailResolution(post.coverImage, 20);
 	const originalImage = changeThumbnailResolution(post.coverImage, 550);
-	const content = post.contents.filter(item => item.order < 3)
+	const content = post.contents.filter(item => item.order < 3);
+
+	function enableObserver() {
+		if(observer) return;
+
+		observer = new IntersectionObserver(([entry]) => {
+			isHovered = entry.isIntersecting
+		}, { threshold: 0.6 })
+
+		observer.observe(elementObserve)
+	}
+
+	function disableObserver() {
+		if(!observer) return;
+
+		observer.disconnect();
+		observer = null;
+		isHovered = false;
+	}
+
+	onMount(() => {
+		mq = window.matchMedia('(max-width: 768px)');
+		const handleChange = e => {
+			e.matches ? enableObserver() : disableObserver();
+		}
+
+		handleChange(mq);
+		mq.addEventListener('change', handleChange);
+
+		onDestroy(() => {
+			mq.removeEventListener('change', handleChange);
+			disableObserver();
+		})
+	})
 
 </script>
 
 <div class="card-container">
 	<h4 class="index-item">{post.index + 1}</h4>
 
-	<div class="stackable">
+	<div class="stackable" bind:this={elementObserve} class:hovered={isHovered}>
 		<div class="img-stack" class:loaded={loaded}>
 		{#each content as item}
 		<img
@@ -29,7 +66,7 @@
 		{/each}
 		</div>
 
-		<div class="image-wrapper" class:loaded={loaded}>
+		<div class="image-wrapper" class:loaded={loaded} class:hovered={isHovered}>
 			<img
 				referrerpolicy="no-referrer"
 				src={placeholder} 
@@ -57,7 +94,7 @@
 
 	<PixelMask 
 		colorBackground="#262626" 
-		colorBorder="#2f2f2f"
+		colorBorder="#4f4f4f"
 		loaded={loaded} />
 </div>
 
@@ -73,6 +110,7 @@
 	justify-content: space-around;
 	overflow: hidden;
 	height: 100%;
+	aspect-ratio: 1/1.15;
 }
 
 .img-stack {
@@ -133,17 +171,24 @@
 	transition: transform .3s ease;
 }
 
-.image-wrapper:hover {
+.image-wrapper:hover,
+.image-wrapper.hovered {
 	transform: rotate(-4deg) scale(1.05);
 	border: 1px solid #6A4BED;
 }
 
-.stackable:hover .img-stack-item:nth-child(even) {
-	transform: rotate(6deg);
+.stackable:hover .img-stack-item:nth-child(even), 
+.stackable.hovered .img-stack-item:nth-child(even) {
+	transform: 
+		rotate(10deg) scale(0.9)
+		translate(50px, -10px);
 }
 
-.stackable:hover .img-stack-item:nth-child(odd) {
-	transform: rotate(-10deg);
+.stackable:hover .img-stack-item:nth-child(odd),
+.stackable.hovered .img-stack-item:nth-child(odd) {
+	transform: 
+		rotate(-12deg) scale(0.9)
+		translate(-50px, -10px);
 }
 
 .image-wrapper .img {
@@ -177,6 +222,11 @@
   opacity: 1;
 }
 
+@media (max-width: 1000px) {
+	.title {
+		font-size: 1em;
+	}
+}
 
 @media (min-width: 600px) {
 	.card-container {
@@ -188,18 +238,40 @@
 	.card-container {
 		aspect-ratio: 1/1.25;
 	}
-
-	.title {
-		font-size: 1em;
-	}
 	
 	.img-stack-item {
 		width: 60vw;
+		min-width: unset;
+		min-height: unset;
 	}
 
-	.image-wrapper {
+	.image-wrapper,
+	.image-wrapper .img {
 		width: 60vw;
-		min-height: none;
+		min-width: unset;
+		min-height: unset;
+	}
+	
+	.stackable:hover, 
+	.image-wrapper:hover {
+		transform: none;
+	}
+
+	.image-wrapper.hovered {
+		transform: rotate(-3deg);
+		border: 1px solid #6A4BED;
+	}
+
+	.stackable.hovered .img-stack-item:nth-child(even) {
+		transform: 
+			rotate(10deg) scale(0.8)
+			translate(50px, -6px);
+	}
+
+	.stackable.hovered .img-stack-item:nth-child(odd) {
+		transform: 
+			rotate(-12deg) scale(0.8)
+			translate(-50px, -6px);
 	}
 }
 

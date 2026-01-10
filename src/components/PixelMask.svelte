@@ -1,13 +1,12 @@
 <script lang="ts">
 import { onMount } from "svelte";
 
-let { loaded = false, colorBackground = "#f1f1f1", colorBorder = "#f1f1f1" } = $props();
-
-let chunkSize = 2;
-let stepDelay = 8;  
-let borderWith = 1;
-
-const pixelsize = 64;
+let { 
+	loaded = false, 
+	pixelsize = 64, borderWith = 1,
+	chunkSize = 3, stepDelay = 8, 
+	colorBackground = "#f1f1f1", colorBorder = "#f1f1f1" 
+} = $props();
 
 let pixels: Array<{x: number, y: number}> = [];
 let index = 0;
