@@ -1,5 +1,5 @@
-const maintence = true;
+const maintence = false;
 
-if(maintence) {
+if(!maintence) {
 	import("./content.js");
 }
