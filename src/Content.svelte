@@ -5,6 +5,22 @@ import Card from "./components/Card.svelte";
 
 const data: Promise<Array<Post>> = getContent();
 
+function randomize(arr: Array<Post>): Array<Post> {
+	return arr.slice().sort(() => Math.random() - 0.5)
+}
+
+function sortByDate(arr: Array<Post>, mode: "asc" | "desc" = "desc"): Array<Post> {
+	return arr.slice().sort((a, b) => {
+		const ad = new Date(a.createdAt)
+		const bd = new Date(b.createdAt)
+
+		const asc = ad.getTime() - bd.getTime();
+		const decs = bd.getTime() - ad.getTime();
+
+		return mode === "asc" ? asc : decs;
+	})
+}
+
 </script>
 
 <section class="content-section">
@@ -12,7 +28,7 @@ const data: Promise<Array<Post>> = getContent();
 	<h1>Loading</h1>
 {:then value}
 <ul class="content-items">
-{#each value.reverse() as item, index}
+{#each sortByDate(value) as item, index}
 	<li>
 		<Card index={index} {...item} />
 	</li>
@@ -33,13 +49,18 @@ const data: Promise<Array<Post>> = getContent();
 .content-items {
 	list-style: none;
 	display: grid;
+	grid-auto-rows: auto;
 }
 
 @media (min-width: 600px) {
-	.content-items { grid-template-columns: repeat(2, 1fr); }
+	.content-items { 
+		grid-template-columns: repeat(2, 1fr); 
+	}
 }
 
 @media (min-width: 900px) {
-	.content-items { grid-template-columns: repeat(3, 1fr); }
+	.content-items { 
+		grid-template-columns: repeat(3, 1fr); 
+	}
 }
 </style>

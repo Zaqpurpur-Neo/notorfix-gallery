@@ -35,7 +35,7 @@ $effect(() => {
 function resize() {
 	const rect = canvas.parentElement.getBoundingClientRect();
 	w = Math.ceil(rect.width);
-	h = Math.ceil(rect.height);
+	h = Math.ceil(rect.height + 64);
 	
 	canvas.width = w;
 	canvas.height = h;

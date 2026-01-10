@@ -72,6 +72,7 @@
 	border-top: 1px solid #4f4f4f;
 	justify-content: space-around;
 	overflow: hidden;
+	height: 100%;
 }
 
 .img-stack {

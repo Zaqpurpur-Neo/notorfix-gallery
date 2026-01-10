@@ -9,7 +9,7 @@ export async function getContent() {
       		throw new Error(`HTTP error! status: ${res.status}`);
     	}
 		
-		return res.json()
+		return await res.json()
 	} catch (err) {
 		throw new Error(err.message)
 	}
