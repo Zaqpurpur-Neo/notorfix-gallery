@@ -10,9 +10,8 @@
 	let mq: MediaQueryList;
 	let observer: IntersectionObserver | null = null;
 	let elementObserve: HTMLDivElement;
-	
-	const placeholder = changeThumbnailResolution(post.coverImage, 20);
-	const originalImage = changeThumbnailResolution(post.coverImage, 550);
+
+	const originalImage = changeThumbnailResolution(post.coverImage, 800);
 	const content = post.contents.filter(item => item.order < 3);
 
 	function enableObserver() {
@@ -20,7 +19,7 @@
 
 		observer = new IntersectionObserver(([entry]) => {
 			isHovered = entry.isIntersecting
-		}, { threshold: 0.6 })
+		}, { threshold: 1 })
 
 		observer.observe(elementObserve)
 	}
@@ -59,7 +58,7 @@
 		<img
 			referrerpolicy="no-referrer"
 			class="img-stack-item"
-			src={changeThumbnailResolution(item.url, 200)}
+			src={changeThumbnailResolution(item.url, 350)}
 			loading="lazy"
 			decoding="async"
 			alt={post.slug + "-" + item.order.toString()} />
@@ -67,14 +66,6 @@
 		</div>
 
 		<div class="image-wrapper" class:loaded={loaded} class:hovered={isHovered}>
-			<img
-				referrerpolicy="no-referrer"
-				src={placeholder} 
-				alt={post.slug}
-				class="img placeholder"
-				aria-hidden="true"
-			/>
-
 			<img 
 				referrerpolicy="no-referrer"
 				src={originalImage}
@@ -93,8 +84,8 @@
 	</div>
 
 	<PixelMask 
-		colorBackground="#262626" 
-		colorBorder="#4f4f4f"
+		colorBackground="#100c14" 
+		colorBorder="#2e2638"
 		loaded={loaded} />
 </div>
 
@@ -106,7 +97,7 @@
 	flex-direction: column;
 	align-items: center;
 	gap: 1em;
-	border-top: 1px solid #4f4f4f;
+	border-top: 1px solid #2e2638;
 	justify-content: space-around;
 	overflow: hidden;
 	height: 100%;
@@ -171,9 +162,11 @@
 	transition: transform .3s ease;
 }
 
-.image-wrapper:hover,
-.image-wrapper.hovered {
-	transform: rotate(-4deg) scale(1.05);
+.stackable:hover .image-wrapper,
+.stackable.hovered .image-wrapper {
+	transform: 
+		rotate(-4deg) scale(0.95)
+		translateY(-15px);
 	border: 1px solid #6A4BED;
 }
 
@@ -197,31 +190,6 @@
 	display: block;
 }
 
-.img.placeholder {
-	position: absolute;
-	inset: 0;
-
-	image-rendering: pixelated;
-	filter: grayscale();
-	scale: 1.1;
-	transition: 
-		transform .4s ease 0s,
-		visibility 0s ease .5s;
-}
-
-.img.full {
-  opacity: 0;
-}
-
-.image-wrapper.loaded .img.placeholder {
-	visibility: hidden;
-	transform: translateY(100%);
-}
-
-.image-wrapper.loaded .img.full {
-  opacity: 1;
-}
-
 @media (max-width: 1000px) {
 	.title {
 		font-size: 1em;
@@ -230,19 +198,22 @@
 
 @media (min-width: 600px) {
 	.card-container {
-		border-right: 1px solid #4f4f4f
+		border-right: 1px solid #2e2638
 	}
 }
 
 @media (max-width: 600px) {
 	.card-container {
-		aspect-ratio: 1/1.25;
+		width: 100%;
+		height: 30em;
+		aspect-ratio: unset;
 	}
 	
 	.img-stack-item {
 		width: 60vw;
 		min-width: unset;
 		min-height: unset;
+		transition-duration: .75s;
 	}
 
 	.image-wrapper,
@@ -250,15 +221,17 @@
 		width: 60vw;
 		min-width: unset;
 		min-height: unset;
+		transition-duration: .75s;
 	}
 	
-	.stackable:hover, 
-	.image-wrapper:hover {
+	.stackable:hover {
 		transform: none;
 	}
 
 	.image-wrapper.hovered {
-		transform: rotate(-3deg);
+		transform: 		
+			rotate(-4deg) scale(0.95)
+			translateY(-15px);
 		border: 1px solid #6A4BED;
 	}
 

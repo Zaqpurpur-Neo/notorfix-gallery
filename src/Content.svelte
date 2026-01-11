@@ -44,6 +44,11 @@ function sortByDate(arr: Array<Post>, mode: "asc" | "desc" = "desc"): Array<Post
 .content-section {
 	position: relative;
 	height: auto;
+
+	background-color: #100c14;
+	opacity: 1;
+	background-image: radial-gradient(#2e2638 1.15px, #100c14 1.15px);
+	background-size: 40px 40px;
 }
 
 .content-items {
