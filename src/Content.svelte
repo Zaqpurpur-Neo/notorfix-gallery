@@ -2,8 +2,8 @@
 import { getContent } from "./utils";
 import { type Post } from ".";
 import Card from "./components/Card.svelte";
+import { sharedData } from "./store";
 
-const data: Promise<Array<Post>> = getContent();
 
 function randomize(arr: Array<Post>): Array<Post> {
 	return arr.slice().sort(() => Math.random() - 0.5)
@@ -24,20 +24,13 @@ function sortByDate(arr: Array<Post>, mode: "asc" | "desc" = "desc"): Array<Post
 </script>
 
 <section class="content-section">
-{#await data}
-	<h1>Loading</h1>
-{:then value}
 <ul class="content-items">
-{#each sortByDate(value) as item, index}
+{#each sortByDate($sharedData) as item, index}
 	<li>
 		<Card index={index} {...item} />
 	</li>
 {/each}
 </ul>
-{:catch err}
-	<h3>Something Went Wrong!</h3>
-	<p>{err.message}</p>
-{/await}
 </section>
 
 <style>

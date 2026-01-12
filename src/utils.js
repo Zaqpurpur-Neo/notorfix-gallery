@@ -2,7 +2,7 @@ export async function getContent() {
 	try {
 		const res = await fetch(
 			"/api/content",
-			{ cache: "force-cache" }
+			{ cache: "reload" }
 		)
 
 		if (!res.ok) {
