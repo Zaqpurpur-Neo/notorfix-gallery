@@ -21,13 +21,7 @@ function sortByDate(arr: Array<Post>, mode: "asc" | "desc" = "desc"): Array<Post
 }
 
 let direction: "asc" | "desc" = $state("desc");
-let content = $state(sortByDate($sharedData, "desc"));
-
-const displayContent: () => Post[] = $derived(() => {
-	return direction === "asc" ?
-		content.toReversed() :
-		content;
-})
+let content = sortByDate($sharedData, "desc");
 
 </script>
 
@@ -37,9 +31,9 @@ const displayContent: () => Post[] = $derived(() => {
 </section>
 <section class="content-section">
 <ul class="content-items">
-{#each displayContent() as item, index}
-	<li>
-		<Card index={direction === "desc" ? ($sharedData.length - index) : index} {...item} />
+{#each content as item, index}
+	<li style:order={direction === "desc" ? index : $sharedData.length - index}>
+		<Card index={$sharedData.length - index} {...item} />
 	</li>
 {/each}
 </ul>
