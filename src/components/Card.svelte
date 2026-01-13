@@ -59,6 +59,7 @@
 			class="img-stack-item"
 			src={item.url}
 			decoding="async"
+			loading="lazy"
 			alt={post.slug + "-" + item.order.toString()} />
 		{/each}
 		</div>
@@ -114,7 +115,10 @@
 	position: absolute;
 	width: 14em;
 	min-width: 14em;
-	min-height: 15em;
+	min-height: 17.5em;
+	background: #2e2638;
+	border: 1px solid #4f4f4f;
+
 	transform-origin: bottom;
 	transition: 
 		transform .3s ease;
@@ -153,9 +157,10 @@
 	overflow: hidden;
 	width: 14em;
 	min-width: 14em;
-	min-height: 16.5em;
+	min-height: 17.5em;
 	border: 1px solid #4f4f4f;
 	transition: transform .3s ease;
+	background: #2e2638;
 }
 
 .stackable:hover .image-wrapper,
