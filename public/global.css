@@ -1,15 +1,26 @@
 :root {
+  --dark: #1b1323;
+  --light: #DFD2FE;
+
+  --accent-1: #A591FA; 
+  --accent-2: #8065EE; 
+  --accent-3: #6042E2; 
+
   font-family: "Outfit", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color: rgba(255, 255, 255, 1);
-  background-color: #100c14;
+  background-color: var(--dark);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+	display: none;
 }
 
 * {
@@ -22,20 +33,10 @@ html {
 }
 
 body {
+	scrollbar-width: none;
 	width: 100%;
 	height: 100dvh;
-}
-
-.maintenance {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-
-	display: none;
+	overflow: hidden;
 }
 
 .hero {
@@ -46,4 +47,5 @@ body {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	background: var(--dark);
 }
