@@ -4,7 +4,6 @@ import { getContent, preloadMultipleImage } from "./utils.js";
 window.scrollTo(0, 0);
 
 const loadingScreen = document.querySelector(".loading-screen")
-const loadingText = loadingScreen.querySelector(".loading-text");
 
 const data = await getContent();
 data.forEach(item => {
@@ -14,9 +13,10 @@ data.forEach(item => {
 
 sharedData.set(data);
 
+/*
 const ig = data.map(item => 
-	[item.coverImageThumb, item.contentsThumb.filter(it => it.order < 2).map(it => it.url)]
-).flat(10);
+	[item.coverImageThumb]
+).slice(0,3);
 
 preloadMultipleImage(ig, {
 	onProgress: (percent) => {
@@ -29,9 +29,17 @@ preloadMultipleImage(ig, {
 		import("./content.js");
 	}
 })
+*/
+
+setTimeout(() => {
+	document.body.style.setProperty("overflow", "unset")
+	loadingScreen.classList.add("closed");
+
+}, 1200);
 
 const maintence = false;
 
 if(!maintence) {
 	await import("./hero.js");
+	await import("./content.js");
 }

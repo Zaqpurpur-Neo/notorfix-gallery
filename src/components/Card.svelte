@@ -2,7 +2,6 @@
     import { onDestroy, onMount } from "svelte";
     import type { Post } from "..";
     import PixelMask from "./PixelMask.svelte";
-    import { hdImage } from "../actions/hdImage";
 	
 	let loaded: boolean = $state(false);
 	let post: Post & { index: number } = $props();
@@ -11,9 +10,7 @@
 	let observer: IntersectionObserver | null = null;
 	let elementObserve: HTMLDivElement;
 
-	const originalImage = post.coverImage;
 	const originalImageThumb = post.coverImageThumb;
-	const content = post.contents.filter(item => item.order < 3);
 	const contentThumb = post.contentsThumb.filter(item => item.order < 3);
 
 	function enableObserver() {
@@ -59,22 +56,20 @@
 		<div class="img-stack" class:loaded={loaded}>
 		{#each contentThumb as item}
 		<img
-			referrerpolicy="no-referrer"
 			class="img-stack-item"
 			src={item.url}
+			decoding="async"
 			alt={post.slug + "-" + item.order.toString()} />
 		{/each}
 		</div>
 
 		<div class="image-wrapper" class:loaded={loaded} class:hovered={isHovered}>
 			<img 
-				referrerpolicy="no-referrer"
 				src={originalImageThumb}
-				use:hdImage={originalImage}
 				alt={post.slug}
 				class="img full"
+				onload={() => loaded = true}
 				decoding="async"
-				loading="lazy"
 			/>
 		</div>
 	
