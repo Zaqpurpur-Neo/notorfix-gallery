@@ -4,7 +4,6 @@ import { type Post } from ".";
 import Card from "./components/Card.svelte";
 import { sharedData } from "./store";
 
-
 function randomize(arr: Array<Post>): Array<Post> {
 	return arr.slice().sort(() => Math.random() - 0.5)
 }
@@ -21,19 +20,72 @@ function sortByDate(arr: Array<Post>, mode: "asc" | "desc" = "desc"): Array<Post
 	})
 }
 
+let direction: "asc" | "desc" = $state("desc");
+let content = $state(sortByDate($sharedData, "desc"));
+
+const displayContent: () => Post[] = $derived(() => {
+	return direction === "asc" ?
+		content.toReversed() :
+		content;
+})
+
 </script>
 
+<section class="nav-sticky">
+	<button class:selected={direction === "desc"} onclick={() => (direction = "desc")} class="nav-btn">LATEST</button>
+	<button class:selected={direction === "asc"} onclick={() => (direction = "asc")} class="nav-btn">OLDEST</button>
+</section>
 <section class="content-section">
 <ul class="content-items">
-{#each sortByDate($sharedData) as item, index}
+{#each displayContent() as item, index}
 	<li>
-		<Card index={index} {...item} />
+		<Card index={direction === "desc" ? ($sharedData.length - index) : index} {...item} />
 	</li>
 {/each}
 </ul>
 </section>
 
 <style>
+
+.nav-sticky {
+	position: sticky;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: .75em;
+	box-sizing: border-box;
+	border: 1px solid #4f4f4f;
+	background: #100c14;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: .5em;
+	z-index: 4;
+	border-left: none;
+	border-right: none;
+}
+
+.nav-btn {
+	font-family: 'Outfit', sans-serif;
+	box-sizing: border-box;
+	padding: .5em 2em;
+	font-size: 1.2em;
+	color: #efefef;
+	background: none;
+	border: 1px solid #4f4f4f;
+	cursor: pointer;
+}
+
+.nav-btn:hover {
+	background: var(--accent-3);
+	border-color: var(--accent-3);
+}
+
+.nav-btn.selected {
+	background: var(--accent-2);
+	border-color: var(--accent-2);
+}
+
 .content-section {
 	position: relative;
 	height: auto;

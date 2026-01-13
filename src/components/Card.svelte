@@ -71,12 +71,14 @@
 				class="img full"
 				onload={() => loaded = true}
 				decoding="async"
+				loading="lazy"
 			/>
 		</div>
 	
 	</div>
 
 	<div class="bottom">
+		<p class="tag">SERIES</p>
 		<h3 class="title">{post.title}</h3>
 	</div>
 
