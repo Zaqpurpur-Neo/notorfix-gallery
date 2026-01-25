@@ -96,6 +96,11 @@ let content = sortByDate($sharedData, "desc");
 	grid-auto-rows: auto;
 }
 
+.content-items :global(.card-container:nth-last-child(-n + 3)) {
+	border-bottom: 1px solid #2e2638;
+	
+}
+
 @media (min-width: 600px) {
 	.content-items { 
 		grid-template-columns: repeat(2, 1fr); 

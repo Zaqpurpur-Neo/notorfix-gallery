@@ -81,11 +81,6 @@
 		<p class="tag">SERIES</p>
 		<h3 class="title">{post.title}</h3>
 	</div>
-
-	<PixelMask 
-		colorBackground="#100c14" 
-		colorBorder="#2e2638"
-		loaded={loaded} />
 </div>
 
 <style>
